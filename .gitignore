@@ -1,2 +1,4 @@
 .*.swp
 preseed/build/
+preseed/*.passwd
+preseed/*.ssh

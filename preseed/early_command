@@ -1,0 +1,31 @@
+#!/bin/sh
+
+. /scion/common.sh
+
+log "early_command: started"
+
+# Select the first non-iso9660 device as installation target.
+for i in $(list-devices disk); do
+    if block-attr --type "$i" | grep -q "iso9660"; then
+        continue
+    fi
+    log "early_command: selected $i as target"
+    db_set partman-auto/disk "$i"
+    db_set grub-installer/bootdev "$i"
+    db_fset grub-installer/bootdev seen "true"
+    break
+done
+
+log "early_command: checking for root password"
+if [ -e /scion/root.passwd ]; then
+    log "early_command: setting root password"
+    db_set passwd/root-password-crypted $(cat /scion/root.passwd)
+fi
+
+log "early_command: checking for scion password"
+if [ -e /scion/scion.passwd ]; then
+    log "early_command: setting scion password"
+    db_set passwd/user-password-crypted $(cat /scion/scion.passwd)
+fi
+
+log "early_command: finished"
