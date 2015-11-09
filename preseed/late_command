@@ -1,0 +1,18 @@
+#!/bin/sh
+
+. /scion/common.sh
+
+if [ -e /scion/root.ssh ]; then
+    log "late_command: installing ~root/.ssh/authorized_keys"
+    mkdir -p /target/root/.ssh
+    cp /scion/root.ssh /target/root/.ssh/authorized_keys
+fi
+
+if [ -e /scion/scion.ssh ]; then
+    log "late_command: installing ~scion/.ssh/authorized_keys"
+    in-target mkdir -p /home/scion/.ssh
+    cp /scion/scion.ssh /target/home/scion/.ssh/authorized_keys
+    in-target chown -R scion: /home/scion
+fi
+
+log "late_command: finished"
