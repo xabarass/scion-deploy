@@ -2,3 +2,6 @@
 preseed/build/
 preseed/*.passwd
 preseed/*.ssh
+ansible/files/*.rsa
+ansible/files/*.rsa.pub
+ansible/hosts

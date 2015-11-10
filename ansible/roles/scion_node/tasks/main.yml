@@ -1,0 +1,31 @@
+---
+- name: Install pre-deps
+  apt: name=git
+- name: Add scion user
+  user: name=scion comment="SCION user" groups=sudo shell=/bin/bash
+- name: Setup ~scion/.ssh/authorized_keys
+  authorized_key: key="{{keys}}" user=scion
+- name: Install scion-deploy ssh key
+  copy: src=files/deploy.rsa dest=~scion/.ssh/id_rsa mode=0400
+  remote_user: scion
+- name: Make sure ~scion/scion.git exists
+  file: path=~scion/scion.git state=directory
+  remote_user: scion
+- name: Checkout SCION codebase
+  git: repo=git@github.com:netsec-ethz/scion.git
+       dest=~/scion.git
+       version=master
+       accept_hostkey=yes
+       recursive=no
+  remote_user: scion
+- name: Install package dependencies
+  shell: APTARGS=-y ./deps.sh pkgs chdir=~scion/scion.git
+- name: Install pip dependencies
+  shell: ./deps.sh pip chdir=~scion/scion.git
+  remote_user: scion
+- name: Install misc dependencies
+  shell: ./deps.sh misc chdir=~scion/scion.git
+  remote_user: scion
+- name: Install zlog dependencies
+  shell: ./deps.sh zlog chdir=~scion/scion.git
+  remote_user: scion
