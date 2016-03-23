@@ -11,6 +11,8 @@ To generate an autoinstall image for ubuntu 14.04 (Trusty):
   - `scion.passwd` - same as `root.passwd`, for the scion user account.
   - `scion.ssh` - installed as `/home/scion/.ssh/authorized_keys`, just like
     for root.
+- (Optional) Edit `trusty.cfg` and change the `d-i mirror/http/hostname` entry
+  to use your local ubuntu mirror.
 - Run the build script in the `preseed/` directory:
 
   `./mkmini.sh`
