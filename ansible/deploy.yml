@@ -1,0 +1,12 @@
+---
+- hosts: all
+  roles:
+    - apt
+
+- hosts: swth, scmn, ethz
+  roles:
+    - scion_node
+
+- hosts: zookeepers
+  roles:
+    - zk

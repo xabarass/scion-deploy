@@ -1,0 +1,5 @@
+---
+- name: apt-get update once per week
+  apt: update_cache=yes cache_valid_time=604800
+  notify:
+    - apt-get dist-upgrade
