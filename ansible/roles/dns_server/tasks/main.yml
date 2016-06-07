@@ -1,0 +1,5 @@
+---
+- name: Copy the gen folder of DNS server
+  copy: src={{local_gen}}/{{cfg_loc}}/ds{{isd}}-{{as}}-{{ds}}
+        dest=~scion/scion.git/gens/{{ts}}/{{cfg_loc}}
+  remote_user: scion

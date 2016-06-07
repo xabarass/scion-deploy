@@ -1,0 +1,5 @@
+---
+- name: Copy the gen folder of certificate server
+  copy: src={{local_gen}}/{{cfg_loc}}/cs{{isd}}-{{as}}-{{cs}}
+        dest=~scion/scion.git/gens/{{ts}}/{{cfg_loc}}
+  remote_user: scion

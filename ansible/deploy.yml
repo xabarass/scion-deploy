@@ -2,11 +2,46 @@
 - hosts: all
   roles:
     - apt
+    - ntp
 
-- hosts: swth, scmn, ethz
+- hosts: scion_nodes
+  tasks:
+  - set_fact:
+      cfg_loc: ISD{{isd}}/AS{{as}}
+      ts: "{{ lookup('pipe', 'stat --printf=%Y {{inventory_file}}') }}"
+
+- hosts: scion_nodes
   roles:
     - scion_node
 
-- hosts: zookeepers
+- hosts: beacon_servers
   roles:
-    - zk
+    - beacon_server
+
+- hosts: path_servers
+  roles:
+    - path_server
+
+- hosts: cert_servers
+  roles:
+    - cert_server
+
+- hosts: edge_routers
+  roles:
+    - edge_router
+
+- hosts: dns_servers
+  roles:
+    - dns_server
+
+- hosts: sibra_servers
+  roles:
+    - sibra_server
+
+- hosts: scion_nodes
+  tasks:
+    - name: Switch-over to the new gen folder
+      file: src=~scion/scion.git/gens/{{ts}}
+            dest=~scion/scion.git/gen
+            state=link
+  remote_user: scion
