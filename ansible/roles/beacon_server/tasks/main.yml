@@ -1,0 +1,5 @@
+---
+- name: Copy the gen folder of beacon server
+  copy: src={{local_gen}}/{{cfg_loc}}/bs{{isd}}-{{as}}-{{bs}}
+        dest=~scion/scion.git/gens/{{ts}}/{{cfg_loc}}
+  remote_user: scion

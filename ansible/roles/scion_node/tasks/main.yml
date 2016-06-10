@@ -29,3 +29,6 @@
 - name: Install zlog dependencies
   shell: ./deps.sh zlog chdir=~scion/scion.git
   remote_user: scion
+- name: Copy the basics of the gen directory
+  copy: src={{local_gen}}/dispatcher  dest=~scion/scion.git/gens/{{ts}}/
+  remote_user: scion

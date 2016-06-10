@@ -1,0 +1,2 @@
+- name: Install NTP
+  apt: name=ntp
