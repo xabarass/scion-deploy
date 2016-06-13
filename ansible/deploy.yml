@@ -1,6 +1,13 @@
 ---
+- hosts: switch_engines
+  roles:
+    - basic
+  remote_user: ubuntu
+  sudo: yes
+
 - hosts: all
   roles:
+    - basic
     - apt
     - ntp
 
@@ -8,7 +15,7 @@
   tasks:
   - set_fact:
       cfg_loc: ISD{{isd}}/AS{{as}}
-      ts: "{{ lookup('pipe', 'stat --printf=%Y {{inventory_file}}') }}"
+      ts: "{{ lookup('pipe', [['stat', '--printf=%Y', inventory_file]]) }}"
 
 - hosts: scion_nodes
   roles:

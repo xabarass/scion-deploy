@@ -1,2 +1,2 @@
 ---
-keys: "{{ lookup('pipe', '/usr/bin/ssh-add -L') }}"
+keys: "{{ lookup('pipe', [['/usr/bin/ssh-add', '-L']]) }}"
