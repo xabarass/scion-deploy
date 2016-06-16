@@ -1,3 +1,4 @@
+---
 - name: Install Zookeeper
   apt: name=zookeeperd
 - name: Install custom Zookeeper config
