@@ -1,5 +1,5 @@
 ---
 - name: Copy the gen folder of edge router
   copy: src={{local_gen}}/{{cfg_loc}}/er{{isd}}-{{as}}er{{to_isd}}-{{to_as}}
-        dest=~scion/scion.git/gens/{{ts}}/{{cfg_loc}}
+        dest={{repo_loc}}/gens/{{ts}}/{{cfg_loc}}
   remote_user: scion

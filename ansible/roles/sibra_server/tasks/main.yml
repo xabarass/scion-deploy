@@ -1,5 +1,5 @@
 ---
 - name: Copy the gen folder of sibra server
   copy: src={{local_gen}}/{{cfg_loc}}/sb{{isd}}-{{as}}-{{sb}}
-        dest=~scion/scion.git/gens/{{ts}}/{{cfg_loc}}
+        dest={{repo_loc}}/gens/{{ts}}/{{cfg_loc}}
   remote_user: scion
