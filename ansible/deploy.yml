@@ -15,6 +15,7 @@
   tasks:
   - set_fact:
       cfg_loc: ISD{{isd}}/AS{{as}}
+      repo_loc: /home/scion/go/src/github.com/netsec-ethz/scion
       ts: "{{ lookup('pipe', [['stat', '--printf=%Y', inventory_file]]) }}"
 
 - hosts: scion_nodes
@@ -48,7 +49,7 @@
 - hosts: scion_nodes
   tasks:
     - name: Switch-over to the new gen folder
-      file: src=~scion/scion.git/gens/{{ts}}
-            dest=~scion/scion.git/gen
+      file: src={{repo_loc}}/gens/{{ts}}
+            dest={{repo_loc}}/gen
             state=link
   remote_user: scion
