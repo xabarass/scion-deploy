@@ -17,15 +17,15 @@
 - name: Checkout SCION codebase
   git: repo=git@github.com:netsec-ethz/scion.git
        dest={{repo_loc}}
-       version=master
+       version={{scion_version}}
        accept_hostkey=yes
   remote_user: scion
 - name: Install all dependencies
-  shell: APTARGS=-y ./deps.sh all chdir={{repo_loc}}
-  remote_user: scion
-- name: Get Go dependencies
-  shell: bash --login -c "go get ./go/..." chdir={{repo_loc}}
+  shell: bash --login -c "APTARGS=-y ./deps.sh all" chdir={{repo_loc}}
   remote_user: scion
 - name: Copy the basics of the gen directory
   copy: src={{local_gen}}/dispatcher  dest={{repo_loc}}/gens/{{ts}}/
+  remote_user: scion
+- name: Copy the endhost folder
+  copy: src={{local_gen}}/ISD{{isd}}/AS{{as}}/endhost  dest={{repo_loc}}/gens/{{ts}}/ISD{{isd}}/AS{{as}}/
   remote_user: scion
