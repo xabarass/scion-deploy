@@ -7,8 +7,15 @@ log "early_command: started"
 # Select the first non-iso9660 device as installation target.
 for i in $(list-devices disk); do
     if block-attr --type "$i" | grep -q "iso9660"; then
+        log "Skipping $i since it has an iso9660 FS"
         continue
     fi
+    # Skip USB card readers like on the Lenovo TC
+    if udevadm info -q env -p /block/${i#/dev/} | grep -q '^ID_USB_DRIVER=usb-storage'; then
+        log "Skipping $i since it uses usb-storage as a driver"
+        continue
+    fi
+
     log "early_command: selected $i as target"
     db_set partman-auto/disk "$i"
     db_set grub-installer/bootdev "$i"
