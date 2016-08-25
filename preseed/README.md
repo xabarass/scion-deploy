@@ -25,8 +25,16 @@ To generate an autoinstall image for Ubuntu:
   `./mkmini.sh trusty`
 
   Note that you will have to have the corresponding config file.
-- This will generate `build/scion-codename.iso`. This image can be burnt to a
-  CD, or directly dd'd onto a usb drive:
+
+  If you want to create an image that is suitable for installation on
+  serial-port-only machines, use:
+
+  `./mkmini.sh xenial serial`
+
+  For this mode, the codename is required.
+- This will generate `build/scion-codename.iso` or
+  `build/scion-codename-serial.iso`. This image can be burnt to a CD, or
+  directly dd'd onto a usb drive:
 
   `sudo dd if=build/scion-xenial.iso of=/dev/sde bs=16M conv=nocreat`
   (this example assumes the usb drive is at `/dev/sde`).
