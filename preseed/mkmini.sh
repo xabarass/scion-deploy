@@ -46,8 +46,8 @@ if [ -n "$pkgs" ]; then
     sudo apt-get install $pkgs || exit 1
 fi
 
-if [ ! -r "${FLAVOR}${SUBTYPE}.cfg" ]; then
-    log "Couldn't find ${FLAVOR}${SUBTYPE}.cfg"
+if [ ! -r "${FLAVOR}.cfg" ]; then
+    log "Couldn't find ${FLAVOR}.cfg"
     exit 1
 fi
 
