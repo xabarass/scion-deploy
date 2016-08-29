@@ -1,0 +1,11 @@
+- hosts: scion_nodes
+  tasks:
+  - set_fact:
+      repo_loc: /home/scion/go/src/github.com/netsec-ethz/scion
+
+- hosts: scion_nodes
+  tasks:
+    - name: Start SCION processes
+      command: /home/scion/.local/bin/supervisorctl -c supervisor/supervisord.conf start all
+               chdir={{repo_loc}}
+  remote_user: scion
