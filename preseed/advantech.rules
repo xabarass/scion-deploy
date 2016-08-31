@@ -3,16 +3,17 @@
 # These are used both during the installation and on the installed OS. They
 # should not be used on other hardware.
 
-# Copper gigabit Ethernet ports 1-8
+# Copper gigabit Ethernet ports 1-6
 DEVPATH=="/devices/pci*/*:1c.0/*:07:00.0/net/enp7s0",  NAME="enc01"
 DEVPATH=="/devices/pci*/*:1c.1/*:08:00.0/net/enp8s0",  NAME="enc02"
 DEVPATH=="/devices/pci*/*:1c.2/*:09:00.0/net/enp9s0",  NAME="enc03"
 DEVPATH=="/devices/pci*/*:1c.3/*:0a:00.0/net/enp10s0", NAME="enc04"
 DEVPATH=="/devices/pci*/*:1c.4/*:0b:00.0/net/enp11s0", NAME="enc05"
 DEVPATH=="/devices/pci*/*:1c.5/*:0c:00.0/net/enp12s0", NAME="enc06"
+# Management interfaces 0 and 1
 DEVPATH=="/devices/pci*/*:1c.6/*:0d:00.0/net/enp13s0", NAME="enc07"
 DEVPATH=="/devices/pci*/*:1c.7/*:0e:00.0/net/enp14s0", NAME="enc08"
 
-# SFP ports on daughter board
-ACTION=="add", DEVPATH=="/devices/pci*/0000:00:01.0/0000:01:00.0/0000:02:01.0/0000:03:00.1/net/ens1f0", NAME="enf01"
+# SFP ports on mezzanine board
+ACTION=="add", DEVPATH=="/devices/pci*/0000:00:01.0/0000:01:00.0/0000:02:01.0/0000:03:00.0/net/ens1f0", NAME="enf01"
 ACTION=="add", DEVPATH=="/devices/pci*/0000:00:01.0/0000:01:00.0/0000:02:01.0/0000:03:00.1/net/ens1f1", NAME="enf02"
