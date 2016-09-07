@@ -11,6 +11,10 @@
   lineinfile: dest=/home/scion/.profile
               line="export PATH=\"/home/scion/.local/bin:/usr/lib/go-1.6/bin:$GOPATH/bin:$PATH\""
   remote_user: scion
+- name: Make sure alias for SCION folder exists .profile
+  lineinfile: dest=/home/scion/.profile
+              line="alias cdscion='cd ~/go/src/github.com/netsec-ethz/scion'"
+  remote_user: scion
 - name: Make sure scion repo folder exists
   file: path={{repo_loc}} state=directory
   remote_user: scion
