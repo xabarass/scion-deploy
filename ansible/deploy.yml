@@ -44,10 +44,6 @@
   roles:
     - border_router
 
-- hosts: dns_servers
-  roles:
-    - dns_server
-
 - hosts: sibra_servers
   roles:
     - sibra_server
