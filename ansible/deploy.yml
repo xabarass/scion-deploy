@@ -3,13 +3,13 @@
   roles:
     - basic
   remote_user: ubuntu
-  sudo: yes
+  become: true
 
 - hosts: ec2
   roles:
     - basic
   remote_user: ubuntu
-  sudo: yes
+  become: true
 
 - hosts: all
   roles:
@@ -22,7 +22,7 @@
   - set_fact:
       cfg_loc: ISD{{isd}}/AS{{as}}
       repo_loc: /home/scion/go/src/github.com/netsec-ethz/scion
-      ts: "{{ lookup('pipe', [['stat', '--printf=%Y', inventory_file]]) }}"
+      ts: "{{ lookup('pipe', 'stat --printf=%Y {{inventory_file}}') }}"
 
 - hosts: scion_nodes
   roles:
