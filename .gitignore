@@ -4,4 +4,5 @@ preseed/*.passwd
 preseed/*.ssh
 ansible/files/*.rsa
 ansible/files/*.rsa.pub
+ansible/files/deploy.scion*
 ansible/hosts*

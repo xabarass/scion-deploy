@@ -1,8 +1,11 @@
 ---
 - name: Install pre-deps
   apt: name=git
-- name: Install scion-deploy ssh key
-  copy: src=files/deploy.rsa dest=/home/scion/.ssh/id_rsa mode=0400
+- name: Install SCION deployment SSH key
+  copy: src=files/deploy.scion dest=/home/scion/.ssh/deploy.scion mode=0400
+  remote_user: scion
+- name: Install SCION VPN GW deployment SSH key
+  copy: src=files/deploy.scion-vpngw dest=/home/scion/.ssh/deploy.scion-vpngw mode=0400
   remote_user: scion
 - name: Make sure GOPATH exists in .profile
   lineinfile: dest=/home/scion/.profile line="export GOPATH=/home/scion/go"
@@ -21,7 +24,14 @@
 - name: Checkout SCION codebase
   git: repo=git@github.com:netsec-ethz/scion.git
        dest={{repo_loc}}
+       key_file=~/.ssh/deploy.scion
        version={{scion_version}}
+       accept_hostkey=yes
+  remote_user: scion
+- name: Checkout SCION VPN Gateway
+  git: repo=git@github.com:netsec-ethz/scion-vpngw.git
+       dest=~/scion-vpngw
+       key_file=~/.ssh/deploy.scion-vpngw
        accept_hostkey=yes
   remote_user: scion
 - name: Install all dependencies
