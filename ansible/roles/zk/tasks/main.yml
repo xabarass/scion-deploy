@@ -1,0 +1,8 @@
+---
+- name: Install Zookeeper
+  apt: name=zookeeperd
+- name: Install custom Zookeeper config
+  copy: src=files/zoo.cfg
+        dest=/etc/zookeeper/conf/zoo.cfg
+  notify:
+    - restart zookeeper

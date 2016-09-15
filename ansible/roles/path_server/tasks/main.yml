@@ -1,0 +1,5 @@
+---
+- name: Copy the gen folder of path server
+  copy: src={{local_gen}}/{{cfg_loc}}/ps{{isd}}-{{as}}-{{ps}}
+        dest={{repo_loc}}/gens/{{ts}}/{{cfg_loc}}
+  remote_user: scion

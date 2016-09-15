@@ -1,0 +1,29 @@
+# Rules specific to the Advantech FWA-3230 machine
+#
+# These are used both during the installation and on the installed OS. They
+# should not be used on other hardware.
+
+# Copper gigabit Ethernet ports 1-6
+# enp7s0  -> enc01
+# enp8s0  -> enc02
+# enp9s0  -> enc03
+# enp10s0 -> enc04
+# enp11s0 -> enc05
+# enp12s0 -> enc06
+DEVPATH=="/devices/pci*/*:1c.0/*:07:00.0/net/*", NAME="enc01"
+DEVPATH=="/devices/pci*/*:1c.1/*:08:00.0/net/*", NAME="enc02"
+DEVPATH=="/devices/pci*/*:1c.2/*:09:00.0/net/*", NAME="enc03"
+DEVPATH=="/devices/pci*/*:1c.3/*:0a:00.0/net/*", NAME="enc04"
+DEVPATH=="/devices/pci*/*:1c.4/*:0b:00.0/net/*", NAME="enc05"
+DEVPATH=="/devices/pci*/*:1c.5/*:0c:00.0/net/*", NAME="enc06"
+# Management interfaces 0 and 1
+# enp13s0 -> mgmt0
+# enp14s0 -> mgmt1
+DEVPATH=="/devices/pci*/*:1c.6/*:0d:00.0/net/*", NAME="mgmt0"
+DEVPATH=="/devices/pci*/*:1c.7/*:0e:00.0/net/*", NAME="mgmt1"
+
+# SFP ports on mezzanine board
+# ens1f0 -> enf01
+# ens1f1 -> enf02
+DEVPATH=="/devices/pci*/*:01.0/*:01:00.0/0000:02:01.0/0000:03:00.0/net/*", NAME="enf01"
+DEVPATH=="/devices/pci*/*:01.0/*:01:00.0/0000:02:01.0/0000:03:00.1/net/*", NAME="enf02"

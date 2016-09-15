@@ -1,0 +1,85 @@
+---
+- hosts: switch_engines
+  roles:
+    - basic
+  remote_user: ubuntu
+  become: true
+
+- hosts: ec2
+  roles:
+    - basic
+  remote_user: ubuntu
+  become: true
+
+- hosts: all
+  roles:
+    - basic
+    - apt
+    - ntp
+
+- hosts: scion_nodes
+  tasks:
+  - set_fact:
+      cfg_loc: ISD{{isd}}/AS{{as}}
+      repo_loc: /home/scion/go/src/github.com/netsec-ethz/scion
+      ts: "{{ lookup('pipe', 'stat --printf=%Y {{inventory_file}}') }}"
+
+- hosts: scion_nodes
+  roles:
+    - scion_node
+
+- hosts: beacon_servers
+  roles:
+    - beacon_server
+
+- hosts: path_servers
+  roles:
+    - path_server
+
+- hosts: cert_servers
+  roles:
+    - cert_server
+
+- hosts: border_routers
+  roles:
+    - border_router
+
+- hosts: sibra_servers
+  roles:
+    - sibra_server
+
+- hosts: zookeepers
+  roles:
+    - zk
+
+- hosts: scion_nodes
+  tasks:
+    - name: Switch-over to the new gen folder
+      file: src={{repo_loc}}/gens/{{ts}}
+            dest={{repo_loc}}/gen
+            state=link
+  remote_user: scion
+
+# When all the above steps succeed, finally start the
+# infrastructure on all the machines of this AS.
+- hosts: scion_nodes
+  tasks:
+    - name: Ensure logs folder exists (required by supervisord)
+      file: path={{repo_loc}}/logs state=directory
+    - name: Stop SCION processes
+      command: /home/scion/.local/bin/supervisorctl -c supervisor/supervisord.conf stop all
+               chdir={{repo_loc}}
+    - name: Stop supervisord if running
+      command: /home/scion/.local/bin/supervisorctl -c supervisor/supervisord.conf shutdown
+               removes=/tmp/supervisor.sock
+               chdir={{repo_loc}}
+    - name: Start supervisord
+      command: /home/scion/.local/bin/supervisord -c supervisor/supervisord.conf
+               creates=/tmp/supervisor.sock
+               chdir={{repo_loc}}
+    - name: Make sure the C code is built and installed
+      shell: bash --login -c "make clean all install" chdir={{repo_loc}}
+    - name: Start SCION processes
+      command: /home/scion/.local/bin/supervisorctl -c supervisor/supervisord.conf start all
+               chdir={{repo_loc}}
+  remote_user: scion

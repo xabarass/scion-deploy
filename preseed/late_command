@@ -1,0 +1,40 @@
+#!/bin/sh
+
+. /scion/common.sh
+
+log "late_command: starting"
+
+NETRULES=/etc/udev/rules.d/90_net.rules
+
+if [ -e /scion/root.ssh ]; then
+    log "late_command: installing ~root/.ssh/authorized_keys"
+    mkdir -p /target/root/.ssh
+    cp /scion/root.ssh /target/root/.ssh/authorized_keys
+fi
+
+if [ -e /scion/scion.ssh ]; then
+    log "late_command: installing ~scion/.ssh/authorized_keys"
+    in-target mkdir -p /home/scion/.ssh
+    cp /scion/scion.ssh /target/home/scion/.ssh/authorized_keys
+    in-target chown -R scion: /home/scion
+fi
+
+log "Fixing GRUB config (/etc/default/grub)"
+sed -i -e '/^GRUB_HIDDEN/d' /target/etc/default/grub
+# The Advantech and Lenovo machines have a subtly different serial configuration
+if grep -q Advantech /sys/class/dmi/id/board_vendor ; then
+    cat /scion/grub_cfg_advantech >> /target/etc/default/grub
+elif grep -q LENOVO /sys/class/dmi/id/board_vendor; then
+    cat /scion/grub_cfg_lenovo  >> /target/etc/default/grub
+fi
+chroot /target update-grub
+chroot /target update-initramfs -u
+
+# If we installed custom network device naming rules, we should also copy them
+# to the target system.
+if [ -f ${NETRULES} ]; then
+	log "Copying rules from ${NETRULES} to /target/${NETRULES}"
+	cp "${NETRULES}" "/target/${NETRULES}"
+fi
+
+log "late_command: finished"

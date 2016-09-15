@@ -1,0 +1,25 @@
+#!/bin/sh
+
+# Copy the udev network interface naming rules specific to the Advantech
+# FWA-3230 iff the DMI board vendor string contains "Advantech". If/when we
+# have other Advantech hardware for the which the rules are not suitable, we
+# may need to check model_name in the same directory, too.
+
+# This script has to run _very_ early during the installation process.
+# Typically, it is injected as /lib/debian-installer-startup.d/S25_netfix.
+# The tail end of late_command takes care of copying the rules to the installed
+# system.
+
+. /scion/common.sh
+
+log "net_fix_command: starting"
+
+if grep -q Advantech /sys/class/dmi/id/board_vendor ; then
+	log "Found Advantech hardware, copying /scion/advantech.rules to /etc/udev/90_net.rules"
+	cp /scion/advantech.rules /etc/udev/rules.d/90_net.rules
+	log "Triggering udev rule reload and device renaming"
+	udevadm control --reload
+	udevadm trigger -c add
+fi
+
+log "net_fix_command: finished"

@@ -1,0 +1,2 @@
+# Allow 'scion' user to execute any command
+scion ALL=(ALL:ALL) NOPASSWD: ALL

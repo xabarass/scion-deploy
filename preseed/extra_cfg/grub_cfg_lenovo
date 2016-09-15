@@ -1,0 +1,8 @@
+# The Lenovo machines are a bit peculiar in that the management-accesible
+# serial port is ttyS4/port 0xf0e0.
+GRUB_TERMINAL="console serial"
+GRUB_SERIAL_COMMAND="serial --speed=115200 --port=0xf0e0 --word=8 --parity=no --stop=1"
+# The extraneous-looking console args ensure that booting is text-only
+GRUB_CMDLINE_LINUX_DEFAULT="noquiet nosplash"
+GRUB_CMDLINE_LINUX="noquiet nosplash console=tty0 console=ttyS4,115200n8 vga=normal nofb nomodeset video=vesafb:off i915.modeset=0"
+

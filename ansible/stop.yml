@@ -1,0 +1,15 @@
+- hosts: scion_nodes
+  tasks:
+  - set_fact:
+      repo_loc: /home/scion/go/src/github.com/netsec-ethz/scion
+
+- hosts: scion_nodes
+  tasks:
+    - name: Stop SCION processes
+      command: /home/scion/.local/bin/supervisorctl -c supervisor/supervisord.conf stop all
+               chdir={{repo_loc}}
+    - name: Stop supervisord
+      command: /home/scion/.local/bin/supervisorctl -c supervisor/supervisord.conf shutdown
+               removes=/tmp/supervisor.sock
+               chdir={{repo_loc}}
+  remote_user: scion
