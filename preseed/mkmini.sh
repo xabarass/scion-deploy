@@ -2,8 +2,8 @@
 
 set -e
 
-FLAVOR=${1:-xenial}
-SUBTYPE="${2:+-$2}"
+FLAVOR=xenial
+SUBTYPE="${1:+-$1}"
 
 BUILD_DIR="build"
 MINI_ISO="$BUILD_DIR/mini-${FLAVOR}.iso"
@@ -71,13 +71,8 @@ log "Patching initrd.gz"
 mkdir -p "$INITRD_EXTRAS/scion"
 
 cp ${FLAVOR}.cfg "$INITRD_EXTRAS/preseed.cfg"
-if [[ ${SUBTYPE} == -serial ]]; then
-	echo 'd-i debian-installer/add-kernel-opts string console=ttyS0,115200 noquiet nosplash' >> "$INITRD_EXTRAS/preseed.cfg"
-else
-	echo 'd-i debian-installer/add-kernel-opts string noquiet nosplash' >> "$INITRD_EXTRAS/preseed.cfg"
-fi
-
-cp common.sh early_command late_command advantech.rules "$INITRD_EXTRAS/scion"
+cp common.sh early_command late_command "$INITRD_EXTRAS/scion"
+cp extra_cfg/{advantech.rules,grub_cfg_lenovo,grub_cfg_advantech} "$INITRD_EXTRAS/scion"
 
 mkdir -p "$INITRD_EXTRAS/lib/debian-installer-startup.d/"
 cp net_fix_command "$INITRD_EXTRAS/lib/debian-installer-startup.d/S25_netfix"

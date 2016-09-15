@@ -1,0 +1,9 @@
+# While "console" is not really useful on the Advantech machines, the IPMI
+# console redirection does a lot of funny things during POST. Using "console"
+# and "serial" ensures we get most messages.
+GRUB_TERMINAL="serial console"
+GRUB_SERIAL_COMMAND="serial --unit=0 --speed=115200 --stop=1 --word=8 --parity=no"
+# Again, the graphics stuff *probably* isn't needed, but it doesn't hurt and
+# it may save our bacon in the future.
+GRUB_CMDLINE_LINUX_DEFAULT="noquiet nosplash"
+GRUB_CMDLINE_LINUX="noquiet nosplash console=tty0 console=ttyS0,115200n8 vga=normal nofb nomodeset video=vesafb:off i915.modeset=0"
