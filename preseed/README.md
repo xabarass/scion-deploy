@@ -13,34 +13,25 @@ To generate an autoinstall image for Ubuntu:
     for root.
   - NOTE: If you provide none of these, you will not be able to log into the
     installed machine!
-- (Optional) Edit the config file (`xenial.cfg` etc) and change the `d-i
+- (Optional) Edit the config file (`xenial.cfg`) and change the `d-i
   mirror/http/hostname` entry  to use your local Ubuntu mirror.
 - Run the build script in the `preseed/` directory:
 
   `./mkmini.sh`
 
-  By default, the script will build an ISO based on Ubuntu 16.04 (Xenial
-  Xerus), but you can specify another Ubuntu codename as the first argument:
-
-  `./mkmini.sh trusty`
-
-  Note that you will have to have the corresponding config file.
-
   If you want to create an image that is suitable for installation on
   serial-port-only machines, use:
 
-  `./mkmini.sh xenial serial`
+  `./mkmini.sh serial`
 
-  For this mode, the codename is required.
-- This will generate `build/scion-codename.iso` or
-  `build/scion-codename-serial.iso`. This image can be burnt to a CD, or
+- This will generate `build/scion-xenial.iso` or
+  `build/scion-xenial-serial.iso`. This image can be burnt to a CD, or
   directly dd'd onto a usb drive:
 
   `sudo dd if=build/scion-xenial.iso of=/dev/sde bs=16M conv=nocreat`
   (this example assumes the usb drive is at `/dev/sde`).
-- The installer will automatically boot after 15s (configurable via
-  `timeout` in `txt.cfg`), and will pause at the end for the install media to
-  be removed.
+- The installer will pause at the end for the install media to be removed. You
+  can also examine the installed OS (mounted at `/target`) at this point.
 - If you want to test the installer inside VirtualBox, you can create a vbox
   image with this command:
 
