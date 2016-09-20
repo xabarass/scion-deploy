@@ -34,6 +34,9 @@
        key_file=~/.ssh/deploy.scion-vpngw
        accept_hostkey=yes
   remote_user: scion
+- name: Ensure SCION VPN GW logs directory exists
+  file: path=~/scion-vpngw/logs state=directory
+  remote_user: scion
 - name: Install all dependencies
   shell: bash --login -c "APTARGS=-y ./deps.sh all" chdir={{repo_loc}}
   remote_user: scion
