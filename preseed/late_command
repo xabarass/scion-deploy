@@ -26,7 +26,12 @@ if grep -q Advantech /sys/class/dmi/id/board_vendor ; then
     cat /scion/grub_cfg_advantech >> /target/etc/default/grub
 elif grep -q LENOVO /sys/class/dmi/id/board_vendor; then
     cat /scion/grub_cfg_lenovo  >> /target/etc/default/grub
+else
+    # This covers the HPE DL20 machine type, but should be good enough for most
+    # generic hardware.
+    cat /scion/grub_cfg_generic  >> /target/etc/default/grub
 fi
+
 chroot /target update-grub
 chroot /target update-initramfs -u
 

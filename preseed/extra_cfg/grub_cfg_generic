@@ -1,0 +1,9 @@
+# This is a generic GRUB cfg that tries to force a text-only console while
+# also supporting serial-only machines (but preferring the normal console).
+# The current use case are HPE DL20 machines.
+GRUB_TERMINAL="console serial"
+GRUB_SERIAL_COMMAND="serial --speed=115200 --word=8 --parity=no --stop=1"
+# The extraneous-looking console args ensure that booting is text-only
+GRUB_CMDLINE_LINUX_DEFAULT="noquiet nosplash"
+GRUB_CMDLINE_LINUX="noquiet nosplash console=tty0 console=ttyS0,115200n8 vga=normal nofb nomodeset video=vesafb:off i915.modeset=0"
+
