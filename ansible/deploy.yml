@@ -5,7 +5,7 @@
   remote_user: ubuntu
   become: true
 
-- hosts: ec2
+- hosts: amazon_ec2
   roles:
     - basic
   remote_user: ubuntu
