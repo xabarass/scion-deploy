@@ -39,6 +39,8 @@
   remote_user: scion
 - name: Install all dependencies
   shell: bash --login -c "APTARGS=-y ./deps.sh all" chdir={{repo_loc}}
+  environment:
+    GIT_SSH_COMMAND: 'ssh -i ~/.ssh/deploy.scion'
   remote_user: scion
 - name: Copy the basics of the gen directory
   copy: src={{local_gen}}/dispatcher  dest={{repo_loc}}/gens/{{ts}}/
