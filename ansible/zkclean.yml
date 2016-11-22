@@ -1,0 +1,10 @@
+- hosts: zookeepers
+  vars:
+    repo_loc: /home/scion/go/src/github.com/netsec-ethz/scion
+  tasks:
+    - name: Delete Zookeeper State
+      command: tools/zkcleanslate
+               chdir={{repo_loc}}
+      environment:
+        PYTHONPATH: "{{repo_loc}}"
+  remote_user: scion
