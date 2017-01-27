@@ -42,4 +42,6 @@ if [ -f ${NETRULES} ]; then
 	cp "${NETRULES}" "/target/${NETRULES}"
 fi
 
+cp /scion/finalize.sh /target/root/
+
 log "late_command: finished"

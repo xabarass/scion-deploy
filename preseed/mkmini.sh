@@ -71,7 +71,7 @@ log "Patching initrd.gz"
 mkdir -p "$INITRD_EXTRAS/scion"
 
 cp ${FLAVOR}.cfg "$INITRD_EXTRAS/preseed.cfg"
-cp common.sh early_command late_command "$INITRD_EXTRAS/scion"
+cp common.sh early_command finalize.sh late_command "$INITRD_EXTRAS/scion"
 cp extra_cfg/{advantech.rules,grub_cfg_lenovo,grub_cfg_advantech,grub_cfg_generic} "$INITRD_EXTRAS/scion"
 
 mkdir -p "$INITRD_EXTRAS/lib/debian-installer-startup.d/"
