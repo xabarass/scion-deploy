@@ -1,5 +1,6 @@
 ---
-- name: Copy the gen folder of edge router
-  copy: src={{local_gen}}/{{cfg_loc}}/br{{isd}}-{{as}}-{{br}}
+- name: Copy the gen folder of border router
+  copy: src={{local_gen}}/{{cfg_loc}}/br{{isd}}-{{as}}-{{item}}
         dest={{repo_loc}}/gens/{{ts}}/{{cfg_loc}}
+  with_items: "{{instances}}"
   remote_user: scion
