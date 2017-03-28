@@ -36,10 +36,11 @@
     mode: 0700
 
 - name: Setup ~scion/.ssh/authorized_keys and ensure permissions=0600
+  vars:
+    authorized_keys: "{{SCION_KEYS|default('files/authorized_keys-scion')}}"
   copy:
-    src: files/authorized_keys-scion
+    src: "{{authorized_keys}}"
     dest: ~scion/.ssh/authorized_keys
     owner: scion
     group: scion
     mode: 0600
-
