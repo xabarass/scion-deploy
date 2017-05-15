@@ -1,0 +1,34 @@
+---
+- block:
+  - name: Install pre-deps
+    apt: name=git
+  - name: Configure Git to use HTTPS Protocol
+    # TODO(ercanucan): It would be better to use git_config module instead of the command module.
+    # However, git_config module is not recognized for Ansible versions that come with Odroid devices.
+    command: git config --global url."https://github.com/".insteadOf "git@github.com:"
+  - name: Make sure GOPATH exists in .profile
+    lineinfile: dest=/home/scion/.profile line="export GOPATH=/home/scion/go"
+  - name: Make sure PATH exists in .profile
+    lineinfile: dest=/home/scion/.profile
+                line="export PATH=\"/home/scion/.local/bin:/usr/lib/go-1.6/bin:$GOPATH/bin:$PATH\""
+  - name: Make sure alias for SCION folder exists .profile
+    lineinfile: dest=/home/scion/.profile
+                line="alias cdscion='cd ~/go/src/github.com/netsec-ethz/scion'"
+  - name: Make sure scion repo folder exists
+    file: path={{repo_loc}} state=directory
+  - name: Checkout SCION codebase
+    git: repo=https://github.com/netsec-ethz/scion.git
+         dest={{repo_loc}}
+         version={{scion_version}}
+         recursive=yes
+         accept_hostkey=yes
+  - name: Install all dependencies
+    # TODO(ercanucan): Will be changed to ./env/deps for versions newer than 9c8a577b3a712a6280a250e4d505a54a9ecb9be8
+    shell: bash --login -c "APTARGS=-y ./deps.sh all" chdir={{repo_loc}}
+  - name: Copy the basics of the gen directory
+    copy: src={{local_gen}}/dispatcher  dest={{repo_loc}}/gens/{{ts}}/
+  - name: Copy the endhost folder
+    copy: src={{local_gen}}/ISD{{isd}}/AS{{as}}/endhost  dest={{repo_loc}}/gens/{{ts}}/ISD{{isd}}/AS{{as}}/
+
+  become: true
+  become_user: scion

@@ -1,0 +1,28 @@
+---
+- block:
+  - name: Add scion user
+    user:
+      name: scion
+      comment: "SCION user"
+      groups: sudo
+      shell: /bin/bash
+  - name: Install the scion sudoers file under /etc/sudoers.d/scion
+    copy:
+      src: files/scion_sudoers
+      dest: /etc/sudoers.d/scion
+      owner: root
+      group: root
+  - name: Create ~scion/.ssh and ensure permissions=0700
+    file:
+      path: ~scion/.ssh
+      state: directory
+      owner: scion
+      group: scion
+      mode: 0700
+  # Needed to set permissions on the temporary files Ansible needs to
+  # create when becoming an unprivileged user. See:
+  # https://docs.ansible.com/ansible/become.html#becoming-an-unprivileged-user"
+  - name: Install setfacl Support
+    apt: pkg=acl
+
+  become: true

@@ -16,6 +16,7 @@
     - basic
     - apt
     - ntp
+  become: true
 
 - hosts: scion_nodes
   tasks:
@@ -52,18 +53,14 @@
   roles:
     - zk
 
+# When all the above steps succeed, finally start the
+# infrastructure on all the machines of this AS.
 - hosts: scion_nodes
   tasks:
     - name: Switch-over to the new gen folder
       file: src={{repo_loc}}/gens/{{ts}}
             dest={{repo_loc}}/gen
             state=link
-  remote_user: scion
-
-# When all the above steps succeed, finally start the
-# infrastructure on all the machines of this AS.
-- hosts: scion_nodes
-  tasks:
     - name: Ensure logs folder exists (required by supervisord)
       file: path={{repo_loc}}/logs state=directory
     - name: Stop SCION processes
@@ -83,3 +80,5 @@
       command: /home/scion/.local/bin/supervisorctl -c supervisor/supervisord.conf start all
                chdir={{repo_loc}}
   remote_user: scion
+  become: "{{simple_conf|default(false)}}"
+  become_user: scion

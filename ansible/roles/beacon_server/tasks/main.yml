@@ -3,3 +3,5 @@
   copy: src={{local_gen}}/{{cfg_loc}}/bs{{isd}}-{{as}}-{{bs}}
         dest={{repo_loc}}/gens/{{ts}}/{{cfg_loc}}
   remote_user: scion
+  become: "{{simple_conf|default(false)}}"
+  become_user: scion
