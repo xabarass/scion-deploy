@@ -23,8 +23,7 @@
          recursive=yes
          accept_hostkey=yes
   - name: Install all dependencies
-    # TODO(ercanucan): Will be changed to ./env/deps for versions newer than 9c8a577b3a712a6280a250e4d505a54a9ecb9be8
-    shell: bash --login -c "APTARGS=-y ./deps.sh all" chdir={{repo_loc}}
+    shell: bash --login -c "APTARGS=-y ./env/deps" chdir={{repo_loc}}
   - name: Copy the basics of the gen directory
     copy: src={{local_gen}}/dispatcher  dest={{repo_loc}}/gens/{{ts}}/
   - name: Copy the endhost folder

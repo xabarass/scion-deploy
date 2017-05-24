@@ -74,8 +74,8 @@
       command: /home/scion/.local/bin/supervisord -c supervisor/supervisord.conf
                creates=/tmp/supervisor.sock
                chdir={{repo_loc}}
-    - name: Make sure the C code is built and installed
-      shell: bash --login -c "make clean all install" chdir={{repo_loc}}
+    - name: Make sure the code is built and installed
+      shell: bash --login -c "make -s clean all" chdir={{repo_loc}}
     - name: Start SCION processes
       command: /home/scion/.local/bin/supervisorctl -c supervisor/supervisord.conf start all
                chdir={{repo_loc}}
