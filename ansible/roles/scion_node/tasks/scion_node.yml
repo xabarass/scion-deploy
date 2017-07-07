@@ -7,9 +7,16 @@
 - name: Make sure GOPATH exists in .profile
   lineinfile: dest=/home/scion/.profile line="export GOPATH=/home/scion/go"
   remote_user: scion
-- name: Make sure PATH exists in .profile
+- name: Make sure Go-1.6 is not there anymore
+  file: path=/usr/lib/go-1.6 state=absent
+- name: Make sure path for Go-1.6 is removed from .profile
   lineinfile: dest=/home/scion/.profile
               line="export PATH=\"/home/scion/.local/bin:/usr/lib/go-1.6/bin:$GOPATH/bin:$PATH\""
+              state=absent
+  remote_user: scion
+- name: Make sure PATH exists in .profile
+  lineinfile: dest=/home/scion/.profile
+              line="export PATH=\"/home/scion/.local/bin:/usr/local/go/bin:$GOPATH/bin:$PATH\""
   remote_user: scion
 - name: Make sure alias for SCION folder exists .profile
   lineinfile: dest=/home/scion/.profile
@@ -26,7 +33,7 @@
        accept_hostkey=yes
   remote_user: scion
 - name: Install all dependencies
-  shell: bash --login -c "APTARGS=-y ./env/deps" chdir={{repo_loc}}
+  shell: bash --login -c "APTARGS=-y GO_INSTALL=y ./env/deps" chdir={{repo_loc}}
   environment:
     GIT_SSH_COMMAND: 'ssh -i ~/.ssh/deploy.scion'
   remote_user: scion
