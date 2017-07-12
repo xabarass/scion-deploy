@@ -8,9 +8,13 @@
     command: git config --global url."https://github.com/".insteadOf "git@github.com:"
   - name: Make sure GOPATH exists in .profile
     lineinfile: dest=/home/scion/.profile line="export GOPATH=/home/scion/go"
-  - name: Make sure PATH exists in .profile
+  - name: Make sure path for Go-1.6 is removed from .profile
     lineinfile: dest=/home/scion/.profile
                 line="export PATH=\"/home/scion/.local/bin:/usr/lib/go-1.6/bin:$GOPATH/bin:$PATH\""
+                state=absent
+  - name: Make sure PATH exists in .profile
+    lineinfile: dest=/home/scion/.profile
+                line="export PATH=\"/home/scion/.local/bin:/usr/local/go/bin:$GOPATH/bin:$PATH\""
   - name: Make sure alias for SCION folder exists .profile
     lineinfile: dest=/home/scion/.profile
                 line="alias cdscion='cd ~/go/src/github.com/netsec-ethz/scion'"
@@ -23,7 +27,7 @@
          recursive=yes
          accept_hostkey=yes
   - name: Install all dependencies
-    shell: bash --login -c "APTARGS=-y ./env/deps" chdir={{repo_loc}}
+    shell: bash --login -c "APTARGS=-y GO_INSTALL=y ./env/deps" chdir={{repo_loc}}
   - name: Copy the basics of the gen directory
     copy: src={{local_gen}}/dispatcher  dest={{repo_loc}}/gens/{{ts}}/
   - name: Copy the endhost folder
