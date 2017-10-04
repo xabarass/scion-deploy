@@ -63,6 +63,9 @@
             state=link
     - name: Ensure logs folder exists (required by supervisord)
       file: path={{repo_loc}}/logs state=directory
+    - name: Ensure that the gen-cache is cleared
+      file: path={{repo_loc}}/gen-cache state=absent
+      when: clear_cert_cache|default(false)|bool == true
     - name: Stop SCION processes
       command: /home/scion/.local/bin/supervisorctl -c supervisor/supervisord.conf stop all
                chdir={{repo_loc}}
